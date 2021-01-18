@@ -118,42 +118,42 @@ export default {
     return {
       match: {
         word: "",
-        definition: ""
+        definition: "",
       },
       fields: [
         {
           key: "index",
           label: "NO.",
-          sortable: true
+          sortable: true,
         },
         {
           key: "word",
           label: "WORD",
-          sortable: true
+          sortable: true,
         },
         {
           key: "definition",
           label: "DEFINITION",
-          sortable: true
+          sortable: true,
         },
         {
           key: "action",
           label: "",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
-      matches: []
+      matches: [],
     };
   },
   validations: {
     match: {
       word: {
-        required
+        required,
       },
       definition: {
-        required
-      }
-    }
+        required,
+      },
+    },
   },
   methods: {
     validateState(name) {
@@ -170,7 +170,7 @@ export default {
     onNewMatch() {
       this.match = {
         word: "",
-        definition: ""
+        definition: "",
       };
       this.$v.$reset();
       this.$bvModal.show("modal-match");
@@ -192,19 +192,23 @@ export default {
       }
       this.match.id = Date.now();
       this.matches.push(this.match);
-      this.$bvModal.hide("modal-match");
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-match");
+      });
     },
     async doUpdateMatch() {
       if (!this.checkFormValidity()) {
         return;
       }
-      this.matches = this.matches.map(item => {
+      this.matches = this.matches.map((item) => {
         if (item.id === this.match.id) {
           return { ...this.match };
         }
         return item;
       });
-      this.$bvModal.hide("modal-match");
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-match");
+      });
     },
     deleteMatch(item) {
       this.$bvModal
@@ -214,25 +218,25 @@ export default {
           cancelTitle: "NO",
           footerClass: "p-2",
           hideHeaderClose: false,
-          centered: true
+          centered: true,
         })
-        .then(value => {
+        .then((value) => {
           if (value) {
             this.doDeleteMatch(item.id);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
     doDeleteMatch(id) {
-      this.matches = this.matches.filter(item => item.id !== id);
+      this.matches = this.matches.filter((item) => item.id !== id);
     },
     editMatch(item) {
       this.match = { ...item };
       this.$v.$reset();
       this.$bvModal.show("modal-match");
-    }
-  }
+    },
+  },
 };
 </script>
