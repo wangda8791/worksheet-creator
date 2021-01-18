@@ -40,6 +40,9 @@
         </div>
       </form>
     </b-modal>
+    <b-modal id="modal-preview" title="Preview Worksheet">
+      <worksheet :data="matches" />
+    </b-modal>
     <div class="row mb-1">
       <div class="col col-sm-12">
         <b-button
@@ -106,49 +109,51 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
+import Worksheet from "../components/Worksheet.vue";
 
 export default {
+  components: { Worksheet },
   mixins: [validationMixin],
   data() {
     return {
       match: {
         word: "",
-        definition: "",
+        definition: ""
       },
       fields: [
         {
           key: "index",
           label: "NO.",
-          sortable: true,
+          sortable: true
         },
         {
           key: "word",
           label: "WORD",
-          sortable: true,
+          sortable: true
         },
         {
           key: "definition",
           label: "DEFINITION",
-          sortable: true,
+          sortable: true
         },
         {
           key: "action",
           label: "",
-          sortable: false,
-        },
+          sortable: false
+        }
       ],
-      matches: [],
+      matches: []
     };
   },
   validations: {
     match: {
       word: {
-        required,
+        required
       },
       definition: {
-        required,
-      },
-    },
+        required
+      }
+    }
   },
   methods: {
     validateState(name) {
@@ -165,12 +170,14 @@ export default {
     onNewMatch() {
       this.match = {
         word: "",
-        definition: "",
+        definition: ""
       };
       this.$v.$reset();
       this.$bvModal.show("modal-match");
     },
-    onPreview() {},
+    onPreview() {
+      this.$bvModal.show("modal-preview");
+    },
     onCreateOrUpdate(bvModalEvt) {
       bvModalEvt.preventDefault();
       if (this.match.id) {
@@ -191,7 +198,7 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-      this.matches = this.matches.map((item) => {
+      this.matches = this.matches.map(item => {
         if (item.id === this.match.id) {
           return { ...this.match };
         }
@@ -207,25 +214,25 @@ export default {
           cancelTitle: "NO",
           footerClass: "p-2",
           hideHeaderClose: false,
-          centered: true,
+          centered: true
         })
-        .then((value) => {
+        .then(value => {
           if (value) {
             this.doDeleteMatch(item.id);
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
     doDeleteMatch(id) {
-      this.matches = this.matches.filter((item) => item.id !== id);
+      this.matches = this.matches.filter(item => item.id !== id);
     },
     editMatch(item) {
       this.match = { ...item };
       this.$v.$reset();
       this.$bvModal.show("modal-match");
-    },
-  },
+    }
+  }
 };
 </script>
