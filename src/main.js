@@ -4,10 +4,11 @@ import App from "./App.vue";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import "./sass/app.scss";
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
 new Vue({
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
